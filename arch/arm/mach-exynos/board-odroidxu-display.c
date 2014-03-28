@@ -495,6 +495,6 @@ void __init exynos5_odroidxu_display_init(void)
     }
     else    {
     	platform_add_devices(odroidxu_mipi_display_devices, ARRAY_SIZE(odroidxu_mipi_display_devices));
-    	exynos5_fimd1_setup_clock(&s5p_device_fimd1.dev, "sclk_fimd", "mout_cpll", 64 * MHZ);
+    	exynos5_fimd1_setup_clock(&s5p_device_fimd1.dev, "sclk_fimd", "mout_mpll_bpll", 134 * MHZ);
     }
 }
