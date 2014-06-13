@@ -38,8 +38,8 @@
 #define BASE_QUICK_DOWN_LEVEL	2
 #define BASE_WAKE_UP_LEVEL		3
 #define DOWN_REQUIREMENT_THRESHOLD	3
-#ifdef USING_640MHZ
-#define GPU_DVFS_MAX_LEVEL		6
+#ifdef USING_532MHZ
+#define GPU_DVFS_MAX_LEVEL		5
 #else
 #define GPU_DVFS_MAX_LEVEL		4
 #endif
@@ -55,13 +55,12 @@
 /* start define DVFS info */
 static GPU_DVFS_DATA default_dvfs_data[] = {
 /* level, clock, voltage, src clk, min, max, min2, max2, stay, mask, etc */
-#ifdef USING_640MHZ
-	{ 0,    640, 1200000,     640, 180, 256,   170, 256, 0, 0, 0 },
-	{ 1,    532, 1150000,     532, 170, 100,   160, 250, 0, 0, 0 },
-	{ 2,    480, 1100000,     480, 160, 190,   150, 250, 0, 0, 0 },
-	{ 3,    350,  925000,     350, 150, 200,   140, 250, 0, 0, 0 },
-	{ 4,    266,  900000,     266, 140, 200,   130, 220, 0, 0, 0 },
-	{ 5,    177,  900000,     177,   0, 200,     0, 220, 0, 0, 0 },
+#ifdef USING_532MHZ
+	{ 0,    532, 1150000,     532, 180, 256,   170, 256, 1, 0, 0 },
+	{ 1,    480, 1100000,     480, 170, 200,   160, 250, 2, 0, 0 },
+	{ 2,    350,  925000,     350, 160, 190,   150, 250, 3, 0, 0 },
+	{ 3,    266,  900000,     266, 150, 200,   140, 250, 3, 0, 0 },
+	{ 4,    177,  900000,     177,   0, 200,     0, 220, 3, 0, 0 },
 #else
 	{ 0,    480, 1100000,     480, 170, 256,   160, 256, 0, 0, 0 },
 	{ 1,    350,  925000,     350, 160, 190,   150, 210, 0, 0, 0 },
