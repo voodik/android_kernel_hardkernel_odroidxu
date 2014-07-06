@@ -17,6 +17,10 @@
 
 /*      Pixel format          FOURCC                     depth  Description  */
 
+/* RGB format */
+#define V4L2_PIX_FMT_RGB32X v4l2_fourcc('R', 'G', 'B', 'X') /* 32  RGB-8-8-8-8   */
+#define V4L2_PIX_FMT_ARGB32 v4l2_fourcc('A', 'R', 'G', 'B') /* 32  ARGB-8-8-8-8  */
+
 /* two planes -- one Y, one Cr + Cb interleaved  */
 #define V4L2_PIX_FMT_YUV444_2P v4l2_fourcc('Y', 'U', '2', 'P') /* 24  Y/CbCr */
 #define V4L2_PIX_FMT_YVU444_2P v4l2_fourcc('Y', 'V', '2', 'P') /* 24  Y/CrCb */
@@ -89,7 +93,7 @@
 #define V4L2_CID_TV_HDCP_ENABLE		(V4L2_CID_EXYNOS_BASE + 65)
 #define V4L2_CID_TV_HDMI_STATUS		(V4L2_CID_EXYNOS_BASE + 66)
 #define V4L2_CID_TV_SOURCE_PHY_ADDR	(V4L2_CID_EXYNOS_BASE + 67)
-#define V4L2_CID_TV_BLANK		(V4L2_CID_EXYNOS_BASE + 68)
+#define V4L2_CID_TV_BLANK           (V4L2_CID_EXYNOS_BASE + 68)
 
 /* for color space conversion equation selection */
 #define V4L2_CID_CSC_EQ_MODE		(V4L2_CID_EXYNOS_BASE + 100)
@@ -266,4 +270,14 @@ enum v4l2_mpeg_video_h264_hierarchical_coding_type {
 					(V4L2_CID_MPEG_MFC_BASE + 48)
 #define V4L2_CID_MPEG_VIDEO_DECODER_WAIT_DECODING_START		\
 					(V4L2_CID_MPEG_MFC_BASE + 49)
+#define V4L2_CID_MPEG_VIDEO_QOS_RATIO				\
+					(V4L2_CID_MPEG_MFC_BASE + 50)
+#define V4L2_CID_MPEG_MFC_GET_VERSION_INFO			\
+					(V4L2_CID_MPEG_MFC_BASE + 91)
+#define V4L2_CID_MPEG_MFC_SET_DYNAMIC_DPB_MODE			\
+					(V4L2_CID_MPEG_MFC_BASE + 95)
+#define V4L2_CID_MPEG_MFC_SET_USER_SHARED_HANDLE			\
+					(V4L2_CID_MPEG_MFC_BASE + 96)
+#define V4L2_CID_MPEG_MFC_GET_EXT_INFO			\
+					(V4L2_CID_MPEG_MFC_BASE + 97)
 #endif /* __LINUX_VIDEODEV2_EXYNOS_MEDIA_H */
