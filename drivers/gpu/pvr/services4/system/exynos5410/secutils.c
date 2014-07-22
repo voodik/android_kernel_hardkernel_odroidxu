@@ -63,17 +63,14 @@ extern void sec_gpu_dvfs_handler(int utilization_value);
 IMG_VOID SysSGXIdleTransition(IMG_BOOL bSGXIdle)
 {
 	#if defined(CONFIG_ARM_EXYNOS5410_BUS_DEVFREQ)
-	if(bEnableMIFMornitering)
-	{
+	if (bEnableMIFMornitering) {
 	#endif
 		if (bSGXIdle)
 			sgx_hw_end(); /* wakeup state */
 		else
 			sgx_hw_start(); /* idle state */
 	#if defined(CONFIG_ARM_EXYNOS5410_BUS_DEVFREQ)
-	}
-	else
-	{
+	} else	{
 		if (bSGXIdle){
 			sgx_hw_end(); /* wakeup state */
 			{
@@ -85,8 +82,7 @@ IMG_VOID SysSGXIdleTransition(IMG_BOOL bSGXIdle)
 				status = EXYNOS_CLKREG(0x2051c);
 				__raw_writel(0x3F, status);
 			}
-		}
-		else {
+		} else {
 			{
 				void __iomem *status;
 				status = EXYNOS_CLKREG(0x2051c);

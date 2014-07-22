@@ -43,7 +43,7 @@ struct pm_qos_request exynos5_g3d_int_qos;
 static int sec_gpu_top_clock;
 static int gpu_voltage_marin;
 int sec_wakeup_lock_state = 1;
-bool sec_gpu_power_on = false;
+bool sec_gpu_power_on;
 
 module_param(sec_wakeup_lock_state, int, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH);
 MODULE_PARM_DESC(sec_wakeup_lock_state, "SGX wakeup lock setting");
@@ -133,7 +133,7 @@ void sec_gpu_vol_clk_change(int sgx_clock, int sgx_voltage)
 	else {
 		sec_gpu_setting_clock = sgx_clock;
 		sec_gpu_setting_voltage = sgx_voltage;
-		PVR_LOG(("SGX keep DVFS info sgx_clock:%d MHz, sgx_voltage:%d mV ", sgx_clock, sgx_voltage));
+//		PVR_LOG(("SGX keep DVFS info sgx_clock:%d MHz, sgx_voltage:%d mV ", sgx_clock, sgx_voltage));
 	}
 
 	mutex_unlock(&lock);

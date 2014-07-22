@@ -38,8 +38,8 @@
 #define BASE_QUICK_DOWN_LEVEL	2
 #define BASE_WAKE_UP_LEVEL		3
 #define DOWN_REQUIREMENT_THRESHOLD	3
-#ifdef USING_532MHZ
-#define GPU_DVFS_MAX_LEVEL		5
+#ifdef USING_640MHZ
+#define GPU_DVFS_MAX_LEVEL		6
 #else
 #define GPU_DVFS_MAX_LEVEL		4
 #endif
@@ -55,12 +55,13 @@
 /* start define DVFS info */
 static GPU_DVFS_DATA default_dvfs_data[] = {
 /* level, clock, voltage, src clk, min, max, min2, max2, stay, mask, etc */
-#ifdef USING_532MHZ
-	{ 0,    532, 1150000,     532, 180, 256,   170, 256, 1, 0, 0 },
-	{ 1,    480, 1100000,     480, 170, 200,   160, 250, 2, 0, 0 },
-	{ 2,    350,  925000,     350, 160, 190,   150, 250, 3, 0, 0 },
-	{ 3,    266,  900000,     266, 150, 200,   140, 250, 3, 0, 0 },
-	{ 4,    177,  900000,     177,   0, 200,     0, 220, 3, 0, 0 },
+#ifdef USING_640MHZ
+	{ 0,    640, 1200000,     640, 180, 256,   170, 256, 0, 0, 0 },
+	{ 1,    532, 1150000,     532, 170, 100,   160, 250, 0, 0, 0 },
+	{ 2,    480, 1100000,     480, 160, 190,   150, 250, 0, 0, 0 },
+	{ 3,    350,  925000,     350, 150, 200,   140, 250, 0, 0, 0 },
+	{ 4,    266,  900000,     266, 140, 200,   130, 220, 0, 0, 0 },
+	{ 5,    177,  900000,     177,   0, 200,     0, 220, 0, 0, 0 },
 #else
 	{ 0,    480, 1100000,     480, 170, 256,   160, 256, 0, 0, 0 },
 	{ 1,    350,  925000,     350, 160, 190,   150, 210, 0, 0, 0 },
@@ -100,7 +101,7 @@ module_param(sgx_dvfs_table, charp , S_IRUSR | S_IRGRP | S_IROTH);
 MODULE_PARM_DESC(sgx_dvfs_table, "SGX DVFS frequency array (Mhz)");
 
 #ifdef CONFIG_ASV_MARGIN_TEST
-static int set_g3d_freq = 0;
+static int set_g3d_freq;
 static int __init get_g3d_freq(char *str)
 {
 get_option(&str, &set_g3d_freq);
@@ -188,6 +189,12 @@ static ssize_t set_max_clock(struct device *d, struct device_attribute *a, const
 }
 static DEVICE_ATTR(sgx_dvfs_max_lock, S_IRUGO | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH, get_max_clock, set_max_clock);
 
+static ssize_t get_cur_clock(struct device *d, struct device_attribute *a, char *buf)
+{
+	PVR_DPF((PVR_DBG_MESSAGE,"get_cur_clock: %d MHz", g_gpu_dvfs_data[sgx_dvfs_level].clock));
+	return sprintf(buf, "%d\n", g_gpu_dvfs_data[sgx_dvfs_level].clock);
+}
+static DEVICE_ATTR(sgx_dvfs_cur_clk, S_IRUGO | S_IRGRP | S_IROTH, get_cur_clock, NULL);
 void sec_gpu_dvfs_init(void)
 {
 	struct platform_device *pdev;
@@ -218,6 +225,8 @@ void sec_gpu_dvfs_init(void)
 	if (device_create_file(&pdev->dev, &dev_attr_sgx_dvfs_min_lock) < 0)
 		PVR_LOG(("device_create_file: dev_attr_sgx_dvfs_min_lock fail"));
 	if (device_create_file(&pdev->dev, &dev_attr_sgx_dvfs_max_lock) < 0)
+		PVR_LOG(("device_create_file: dev_attr_sgx_dvfs_max_lock fail"));
+	if (device_create_file(&pdev->dev, &dev_attr_sgx_dvfs_cur_clk) < 0)
 		PVR_LOG(("device_create_file: dev_attr_sgx_dvfs_max_lock fail"));
 
 	 /* Generate DVFS table list*/
@@ -258,8 +267,8 @@ void sec_gpu_dvfs_down_requirement_reset()
 extern unsigned int *g_debug_CCB_Info_RO;
 extern unsigned int *g_debug_CCB_Info_WO;
 extern int g_debug_CCB_Info_WCNT;
-static int g_debug_CCB_Info_Flag = 0;
-static int g_debug_CCB_count = 1;
+static int g_debug_CCB_Info_Flag;
+//static int g_debug_CCB_count = 1;
 int sec_clock_change_up(int level, int step)
 {
 	level -= step;
@@ -274,8 +283,8 @@ int sec_clock_change_up(int level, int step)
 
 	sgx_dvfs_down_requirement = g_gpu_dvfs_data[level].stay_total_count;
 	sec_gpu_vol_clk_change(g_gpu_dvfs_data[level].clock, g_gpu_dvfs_data[level].voltage);
-	if ((g_debug_CCB_Info_Flag % g_debug_CCB_count) == 0)
-		PVR_LOG(("SGX CCB RO : %d, WO : %d, Total : %d", *g_debug_CCB_Info_RO, *g_debug_CCB_Info_WO, g_debug_CCB_Info_WCNT));
+//	if ((g_debug_CCB_Info_Flag % g_debug_CCB_count) == 0)
+//		PVR_LOG(("SGX CCB RO : %d, WO : %d, Total : %d", *g_debug_CCB_Info_RO, *g_debug_CCB_Info_WO, g_debug_CCB_Info_WCNT));
 
 	g_debug_CCB_Info_WCNT = 0;
 	g_debug_CCB_Info_Flag ++;
@@ -302,8 +311,8 @@ int sec_clock_change_down(int level, int step)
 	sgx_dvfs_down_requirement = g_gpu_dvfs_data[level].stay_total_count;
 	sec_gpu_vol_clk_change(g_gpu_dvfs_data[level].clock, g_gpu_dvfs_data[level].voltage);
 
-	if ((g_debug_CCB_Info_Flag % g_debug_CCB_count) == 0)
-		PVR_LOG(("SGX CCB RO : %d, WO : %d, Total : %d", *g_debug_CCB_Info_RO, *g_debug_CCB_Info_WO, g_debug_CCB_Info_WCNT));
+//	if ((g_debug_CCB_Info_Flag % g_debug_CCB_count) == 0)
+//		PVR_LOG(("SGX CCB RO : %d, WO : %d, Total : %d", *g_debug_CCB_Info_RO, *g_debug_CCB_Info_WO, g_debug_CCB_Info_WCNT));
 
 	g_debug_CCB_Info_WCNT = 0;
 	g_debug_CCB_Info_Flag ++;
@@ -415,7 +424,8 @@ void sec_gpu_dvfs_handler(int utilization_value)
 #endif
 				/* need to up current clock */
 				sgx_dvfs_level = sec_clock_change_up(sgx_dvfs_level, BASE_UP_STEP_LEVEL);
-		} else sgx_dvfs_down_requirement = g_gpu_dvfs_data[sgx_dvfs_level].stay_total_count;
+		} else
+			sgx_dvfs_down_requirement = g_gpu_dvfs_data[sgx_dvfs_level].stay_total_count;
 	}
 	g_g3dfreq = g_gpu_dvfs_data[sgx_dvfs_level].clock;
 }
