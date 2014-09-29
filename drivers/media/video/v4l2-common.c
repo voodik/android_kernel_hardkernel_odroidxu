@@ -55,6 +55,7 @@
 #include <linux/spi/spi.h>
 #endif
 #include <asm/uaccess.h>
+#include <asm/system.h>
 #include <asm/pgtable.h>
 #include <asm/io.h>
 #include <asm/div64.h>
@@ -647,3 +648,13 @@ const struct v4l2_frmsize_discrete *v4l2_find_nearest_format(
 	return best;
 }
 EXPORT_SYMBOL_GPL(v4l2_find_nearest_format);
+
+void v4l2_get_timestamp(struct timeval *tv)
+{
+	struct timespec ts;
+
+	ktime_get_ts(&ts);
+	tv->tv_sec = ts.tv_sec;
+	tv->tv_usec = ts.tv_nsec / NSEC_PER_USEC;
+}
+EXPORT_SYMBOL_GPL(v4l2_get_timestamp);

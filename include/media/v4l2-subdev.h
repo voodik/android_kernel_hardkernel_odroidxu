@@ -282,9 +282,12 @@ struct v4l2_subdev_audio_ops {
 struct v4l2_subdev_video_ops {
 	int (*s_routing)(struct v4l2_subdev *sd, u32 input, u32 output, u32 config);
 	int (*s_crystal_freq)(struct v4l2_subdev *sd, u32 freq, u32 flags);
+	int (*g_std)(struct v4l2_subdev *sd, v4l2_std_id *norm);
+	int (*s_std)(struct v4l2_subdev *sd, v4l2_std_id norm);
 	int (*s_std_output)(struct v4l2_subdev *sd, v4l2_std_id std);
 	int (*g_std_output)(struct v4l2_subdev *sd, v4l2_std_id *std);
 	int (*querystd)(struct v4l2_subdev *sd, v4l2_std_id *std);
+	int (*g_tvnorms)(struct v4l2_subdev *sd, v4l2_std_id *std);
 	int (*g_tvnorms_output)(struct v4l2_subdev *sd, v4l2_std_id *std);
 	int (*g_input_status)(struct v4l2_subdev *sd, u32 *status);
 	int (*s_stream)(struct v4l2_subdev *sd, int enable);
