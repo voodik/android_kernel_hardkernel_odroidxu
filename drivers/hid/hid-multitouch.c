@@ -779,9 +779,14 @@ static const struct hid_device_id mt_devices[] = {
         HID_USB_DEVICE(USB_VENDOR_ID_MICROCHIP,
             USB_DEVICE_ID_CHALK7) },
 
+    /* Chalk-Elec (7" Openframe Touch Screen fw 1.6) */
+    { .driver_data = MT_CLS_DEFAULT,
+        HID_USB_DEVICE(USB_VENDOR_ID_DWAV,
+            USB_DEVICE_ID_CHALK7_1_6) },
+
     /* Elitegroup Computer Systems */
     { .driver_data = MT_CLS_DEFAULT,
-    	HID_USB_DEVICE(USB_VENDOR_ID_ELITEGROUP, 
+       HID_USB_DEVICE(USB_VENDOR_ID_ELITEGROUP,
     	    USB_DEVICE_ID_ELITEGROUP_TOUCH) },
 
     /* Nexio Co., Ltd */
