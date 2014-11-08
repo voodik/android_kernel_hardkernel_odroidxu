@@ -278,7 +278,7 @@ struct vb2_ops {
 	void (*buf_cleanup)(struct vb2_buffer *vb);
 
 	int (*start_streaming)(struct vb2_queue *q, unsigned int count);
-	void (*stop_streaming)(struct vb2_queue *q);
+	int (*stop_streaming)(struct vb2_queue *q);
 
 	void (*buf_queue)(struct vb2_buffer *vb);
 };

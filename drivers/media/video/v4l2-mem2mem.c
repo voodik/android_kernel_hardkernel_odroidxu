@@ -38,7 +38,7 @@ module_param(debug, bool, 0644);
 #define TRANS_QUEUED		(1 << 0)
 /* Instance is currently running in hardware */
 #define TRANS_RUNNING		(1 << 1)
-/* Instance is stopped */
+
 #define TRANS_STOPPED		(1 << 2)
 
 /* Offset base for buffers on the destination queue - used to distinguish
@@ -392,6 +392,7 @@ int v4l2_m2m_streamoff(struct file *file, struct v4l2_m2m_ctx *m2m_ctx,
 {
 	struct vb2_queue *vq;
 
+	m2m_ctx->job_flags |= TRANS_STOPPED;
 	vq = v4l2_m2m_get_vq(m2m_ctx, type);
 	return vb2_streamoff(vq, type);
 }
