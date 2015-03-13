@@ -343,7 +343,7 @@ static void __init smdk5410_machine_init(void)
 	exynos5_odroidxu_input_init();
 	exynos5_odroidxu_media_init();
 	exynos5_odroidxu_display_init();
-    exynos5_odroidxu_ioboard_init();
+//    exynos5_odroidxu_ioboard_init();
     
 	ramconsole_pdata.bootinfo = exynos_get_resetreason();
 	platform_add_devices(smdk5410_devices, ARRAY_SIZE(smdk5410_devices));
