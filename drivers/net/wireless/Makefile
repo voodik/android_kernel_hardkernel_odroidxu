@@ -66,3 +66,5 @@ obj-$(CONFIG_BRCMSMAC)	+= brcm80211/
 obj-$(CONFIG_RTL8191SU) += rtl8191su/
 obj-$(CONFIG_RTL8192CU_SDK) += rtl8192cu/
 obj-$(CONFIG_RTL8192CU_V40) += rtl8192cu_v40/
+obj-$(CONFIG_RTL8188EU) += rtl8xxx_EU/
+obj-$(CONFIG_RTL8192CU) += rtl8xxx_CU/
