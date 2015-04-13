@@ -218,15 +218,19 @@ int rt2x00mac_add_interface(struct ieee80211_hw *hw,
 		 * We don't support mixed combinations of
 		 * sta and ap interfaces.
 		 */
-		if (rt2x00dev->intf_sta_count)
+		if (rt2x00dev->intf_sta_count){
+			WARNING(rt2x00dev, "MNG 1\n");
 			return -ENOBUFS;
+			}
 
 		/*
 		 * Check if we exceeded the maximum amount
 		 * of supported interfaces.
 		 */
-		if (rt2x00dev->intf_ap_count >= rt2x00dev->ops->max_ap_intf)
+		if (rt2x00dev->intf_ap_count >= rt2x00dev->ops->max_ap_intf){
+			WARNING(rt2x00dev, "MNG 2\n");
 			return -ENOBUFS;
+			}
 
 		break;
 	case NL80211_IFTYPE_STATION:
@@ -237,15 +241,19 @@ int rt2x00mac_add_interface(struct ieee80211_hw *hw,
 		 * We don't support mixed combinations of
 		 * sta and ap interfaces.
 		 */
-		if (rt2x00dev->intf_ap_count)
+		if (rt2x00dev->intf_ap_count){
+			WARNING(rt2x00dev, "MNG 3\n");
 			return -ENOBUFS;
+			}
 
 		/*
 		 * Check if we exceeded the maximum amount
 		 * of supported interfaces.
 		 */
-		if (rt2x00dev->intf_sta_count >= rt2x00dev->ops->max_sta_intf)
+		if (rt2x00dev->intf_sta_count >= rt2x00dev->ops->max_sta_intf){
+			WARNING(rt2x00dev, "MNG 4\n");
 			return -ENOBUFS;
+			}
 
 		break;
 	default:
